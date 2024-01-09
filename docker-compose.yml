@@ -1,0 +1,74 @@
+version: "3.8"
+services:
+  lm-eval:
+    build:
+      context: .
+      args:
+        - http_proxy=${http_proxy:-}
+        - https_proxy=${https_proxy:-}
+        - EXTRA=${EXTRA:-sentencepiece}
+      tags:
+        - ghcr.io/shoppal-ai/llava:dev
+    env_file: .env
+    environment:
+      - http_proxy=${http_proxy:-}
+      - https_proxy=${https_proxy:-}
+    command:
+      - micromamba
+      - run
+      - -n
+      - python_310
+      - python
+      - -m
+      - lm_eval
+      - --model
+      - ${MODEL}
+      - --model_args
+      - ${MODEL_ARGS}
+      - --tasks
+      - ${TASKS}
+      - --device
+      - ${DEVICE}
+      - --batch_size
+      - ${BATCH_SIZE}
+      - --log_samples
+      - --show_config
+      - --output_path
+      - /workspace/result/${OUTPUT_PATH}
+    volumes:
+      - /data0:/data0
+      - ./result:/workspace/result
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
+              # count: all # if you want to use all gpus, just set count: all
+              device_ids: ["0","1","2","3"] # if you want to use specific gpus, set device_ids: ["0", "1", "2", "3"]
+  visualize:
+    build:
+      context: .
+      args:
+        - http_proxy=${http_proxy:-}
+        - https_proxy=${https_proxy:-}
+        - EXTRA=${EXTRA:-sentencepiece}
+      tags:
+        - ghcr.io/shoppal-ai/llava:dev
+    env_file: .env
+    environment:
+      - ZENO_API_KEY=${ZENO_API_KEY}
+    command:
+      - micromamba
+      - run
+      - -n
+      - python_310
+      - python
+      - scripts/zeno_visualize.py
+      - --data_path
+      - /workspace/result/
+      - --project_name
+      - ${ZENO_PROJECT_NAME}
+    volumes:
+      - /data0:/data0
+      - ./result:/workspace/result
