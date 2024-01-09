@@ -38,6 +38,7 @@ services:
     volumes:
       - /data0:/data0
       - ./result:/workspace/result
+    shm_size: "100gb"
     deploy:
       resources:
         reservations:
