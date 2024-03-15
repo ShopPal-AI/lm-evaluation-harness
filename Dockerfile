@@ -1,4 +1,4 @@
-FROM ghcr.io/shoppal-ai/llm-base:latest
+FROM ghcr.io/starquest-ai/llm-base:latest
 
 LABEL maintainer="Guangbin Zhu <zhuguangbin@shoppal.ai>"
 
