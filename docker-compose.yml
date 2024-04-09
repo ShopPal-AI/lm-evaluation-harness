@@ -8,7 +8,7 @@ services:
         - https_proxy=${https_proxy:-}
         - EXTRA=${EXTRA:-sentencepiece}
       tags:
-        - ghcr.io/shoppal-ai/llava:dev
+        - ghcr.io/starquest-ai/lm-evaluation-harness:dev
     env_file: .env
     environment:
       - http_proxy=${http_proxy:-}
@@ -55,7 +55,7 @@ services:
         - https_proxy=${https_proxy:-}
         - EXTRA=${EXTRA:-sentencepiece}
       tags:
-        - ghcr.io/shoppal-ai/llava:dev
+        - ghcr.io/starquest-ai/lm-evaluation-harness:dev
     env_file: .env
     environment:
       - ZENO_API_KEY=${ZENO_API_KEY}
